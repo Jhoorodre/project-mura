@@ -87,9 +87,6 @@ collections:
   inori-no-nai:
     output: true
     permalink: /inori-no-nai/:name/
-  regression-of-the-close-combat-mage:
-    output: true
-    permalink: /regression-of-the-close-combat-mage/:name/
 defaults:
 - scope:
     type: ore-no-ichizu-jama
@@ -193,10 +190,6 @@ defaults:
     layout: caps
 - scope:
     type: nitamono-doushi
-  values:
-    layout: caps
-- scope:
-    type: regression-of-the-close-combat-mage
   values:
     layout: caps
 exclude:

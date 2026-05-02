@@ -22,44 +22,45 @@ class DriveImporter:
         items = []
         seen_ids = set()
         
-        # 1. Standard internal JSON pattern (often limited to 50)
-        p1 = r'\["([a-zA-Z0-9_-]{28,35})",\["([a-zA-Z0-9_-]{28,35})"\]\s*,\s*"([^"]+)"'
-        matches = re.findall(p1, content)
-        for item_id, parent, name in matches:
-            if parent == folder_id and item_id not in seen_ids:
-                items.append({"id": item_id, "name": name})
-                seen_ids.add(item_id)
-        
-        # 2. Embedded view pattern (often contains up to 200 items)
-        matches_emb = re.findall(r'href="https://drive\.google\.com/drive/folders/([a-zA-Z0-9_-]{28,35})"[^>]*>.*?<div[^>]*>([^<]+)</div>', content, re.S)
-        for item_id, name in matches_emb:
-            if item_id not in seen_ids:
-                items.append({"id": item_id, "name": name.strip()})
-                seen_ids.add(item_id)
-
-        # 3. Aggressive catch-all for IDs linked with names (for files/images)
-        # This helps if the folder contains files instead of subfolders
-        matches_files = re.findall(r'data-id="([a-zA-Z0-9_-]{28,35})".*?data-tooltip="([^"]+)"', content, re.S)
-        for item_id, tooltip in matches_files:
-            if item_id not in seen_ids:
-                name = re.sub(r' (Shared folder|Image|Folder|Video)$', '', tooltip)
-                items.append({"id": item_id, "name": name})
-                seen_ids.add(item_id)
-
-        # 4. Search for secondary data chunks (AF_initDataCallback)
-        # GDrive often stores more data in these chunks
-        chunks = re.findall(r'AF_initDataCallback\({key:.*?, hash:.*?, data:(.*?), sideChannel:.*?}\);', content)
-        for chunk in chunks:
-            try:
-                # This is messy because it's not strict JSON, but let's try to extract IDs and names
-                # Pattern for IDs and names inside lists
-                potential_matches = re.findall(r'["\']([a-zA-Z0-9_-]{28,35})["\'],\[["\']([a-zA-Z0-9_-]{28,35})["\']\],["\']([^"\']+)["\']', chunk)
-                for item_id, parent, name in potential_matches:
-                    if parent == folder_id and item_id not in seen_ids:
+        if use_embedded:
+            matches = re.findall(r'href="https://drive\.google\.com/drive/folders/([a-zA-Z0-9_-]{28,35})"[^>]*>.*?<div[^>]*>([^<]+)</div>', content, re.S)
+            for item_id, name in matches:
+                if item_id not in seen_ids:
+                    items.append({"id": item_id, "name": name.strip()})
+                    seen_ids.add(item_id)
+            
+            matches_files = re.findall(r'href="https://drive\.google\.com/file/d/([a-zA-Z0-9_-]{28,35})"[^>]*>.*?<div[^>]*>([^<]+)</div>', content, re.S)
+            for item_id, name in matches_files:
+                if item_id not in seen_ids:
+                    items.append({"id": item_id, "name": name.strip()})
+                    seen_ids.add(item_id)
+        else:
+            p1 = r'\["([a-zA-Z0-9_-]{28,35})",\["([a-zA-Z0-9_-]{28,35})"\]\s*,\s*"([^"]+)"'
+            matches = re.findall(p1, content)
+            for item_id, parent, name in matches:
+                if parent == folder_id and item_id not in seen_ids:
+                    items.append({"id": item_id, "name": name})
+                    seen_ids.add(item_id)
+            
+            if not items:
+                matches = re.findall(r'data-id="([a-zA-Z0-9_-]{28,35})".*?data-tooltip="([^"]+)"', content, re.S)
+                for item_id, tooltip in matches:
+                    if item_id not in seen_ids:
+                        name = re.sub(r' (Shared folder|Image|Folder|Video)$', '', tooltip)
                         items.append({"id": item_id, "name": name})
                         seen_ids.add(item_id)
-            except:
-                continue
+                        
+            # Aggressive fallback for >50 items in standard view
+            chunks = re.findall(r'AF_initDataCallback\({key:.*?, hash:.*?, data:(.*?), sideChannel:.*?}\);', content)
+            for chunk in chunks:
+                try:
+                    potential_matches = re.findall(r'["\']([a-zA-Z0-9_-]{28,35})["\'],\[["\']([a-zA-Z0-9_-]{28,35})["\']\],["\']([^"\']+)["\']', chunk)
+                    for item_id, parent, name in potential_matches:
+                        if parent == folder_id and item_id not in seen_ids:
+                            items.append({"id": item_id, "name": name})
+                            seen_ids.add(item_id)
+                except Exception:
+                    continue
 
         return items
 

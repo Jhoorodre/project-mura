@@ -11,6 +11,11 @@ class DriveImporter:
         self.session.headers.update({"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"})
 
     def get_drive_data(self, folder_id: str, use_embedded: bool = False) -> List[Dict[str, str]]:
+        # Sanitize folder_id (extract just the ID if a full URL or query params were pasted)
+        match = re.search(r'([a-zA-Z0-9_-]{28,35})', folder_id)
+        if match:
+            folder_id = match.group(1)
+
         if use_embedded:
             url = f"https://drive.google.com/embeddedfolderview?id={folder_id}"
         else:

@@ -70,6 +70,9 @@ class DriveImporter:
         return items
 
     def import_chapters(self, parent_id: str, manga_slug: str, root_path: str = "."):
+        # Sanitize slug just in case
+        manga_slug = manga_slug.lower().replace(" ", "-").replace("_", "-")
+        
         print(f"Scanning folder {parent_id} for chapters...")
         # Try multiple views to maximize results
         all_items = []

@@ -159,6 +159,9 @@ class AddMangaForm(Static):
         
         elif event.button.id == "btn-save":
             m_id = self.query_one("#manga-id").value
+            # Ensure the slug is sanitized before any operations
+            m_id = m_id.lower().replace(" ", "-").replace("_", "-")
+            
             title = self.query_one("#title").value
             sec = self.query_one("#section").value
             tags = [t.strip() for t in self.query_one("#tags").value.split(",") if t.strip()]

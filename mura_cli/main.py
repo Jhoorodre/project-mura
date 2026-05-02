@@ -3,10 +3,12 @@ import subprocess
 from typing import List, Optional
 from mura_cli.core.manager import ProjectManager
 from mura_cli.core.git_ops import GitManager
+from mura_cli.core.importer import DriveImporter
 
 app = typer.Typer(help="Project Mura Automation Tool")
 manager = ProjectManager()
 git_manager = GitManager()
+drive_importer = DriveImporter()
 
 @app.command()
 def add_manga(
@@ -30,6 +32,25 @@ def delete_manga(
     Removes a manga from the catalog and Jekyll config.
     """
     manager.delete_manga(manga_id)
+
+@app.command()
+def import_drive(
+    folder_id: str = typer.Argument(..., help="The Google Drive folder ID"),
+    manga_id: str = typer.Argument(..., help="The slug/ID of the manga"),
+):
+    """
+    Imports all chapters from a Google Drive folder.
+    """
+    latest = drive_importer.import_chapters(folder_id, manga_id)
+    if latest:
+        typer.echo(f"Successfully imported chapters. Latest is {latest}.")
+        # Optionally update catalog automatically
+        cat = manager.load_catalogo()
+        for item in cat["items"]:
+            if item["mangaId"] == manga_id:
+                item["latest"] = f"Capítulo {latest}"
+                break
+        manager.save_catalogo(cat)
 
 @app.command()
 def rebuild():

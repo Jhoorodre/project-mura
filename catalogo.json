@@ -206,19 +206,6 @@
       "seccion": "terminados"
     },
     {
-      "mangaId": "oshi-no-ko",
-      "title": "Oshi no Ko",
-      "post_url": "/oshi-no-ko/inicio",
-      "portada": "/assets/img/oshi-no-ko-cover.jpg",
-      "tags": [
-        "Seinen",
-        "Drama",
-        "Suspenso"
-      ],
-      "latest": "Capítulo 166.5",
-      "seccion": "terminados"
-    },
-    {
       "mangaId": "komi",
       "title": "Komi Can't Communicate",
       "post_url": "/komi/inicio",

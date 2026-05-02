@@ -4,50 +4,25 @@ from typing import List, Optional
 from mura_cli.core.manager import ProjectManager
 from mura_cli.core.git_ops import GitManager
 from mura_cli.core.importer import DriveImporter
-from mura_cli.core.fetcher import MetadataFetcher
-from mura_cli.core.merger import ChapterMerger
 
 app = typer.Typer(help="Project Mura Automation Tool")
 manager = ProjectManager()
 git_manager = GitManager()
 drive_importer = DriveImporter()
-fetcher = MetadataFetcher()
-merger = ChapterMerger()
 
 @app.command()
 def add_manga(
     manga_id: str = typer.Argument(..., help="The slug/ID for the manga (e.g. oshi-no-ko)"),
-    title: Optional[str] = typer.Option(None, "--title", "-t", help="The full title of the manga"),
+    title: str = typer.Option(..., "--title", "-t", help="The full title of the manga"),
     section: str = typer.Option("activos", "--section", "-s", help="Section: activos, joints, or terminados"),
     tags: str = typer.Option("", "--tags", help="Comma-separated tags"),
     portada: str = typer.Option("", "--portada", "-p", help="Path to cover image"),
-    auto_fill: bool = typer.Option(True, "--auto-fill/--no-auto-fill", help="Auto-fill metadata from external APIs"),
 ):
     """
     Adds a new manga to the catalog and Jekyll config.
     """
-    metadata = {}
-    if auto_fill:
-        search_term = title or manga_id
-        typer.echo(f"Auto-filling metadata for: {search_term}...")
-        metadata = fetcher.auto_fill(search_term, manga_id)
-        if metadata:
-            typer.echo(f"Found metadata on {metadata['source']}.")
-            title = title or metadata.get("title")
-            tags = tags or ",".join(metadata.get("genres", []))
-            portada = portada or metadata.get("portada")
-
     tag_list = [t.strip() for t in tags.split(",") if t.strip()]
-    manager.add_manga(
-        manga_id, 
-        title or manga_id, 
-        section, 
-        tag_list, 
-        portada,
-        synopsis=metadata.get("synopsis", ""),
-        authors=metadata.get("authors", []),
-        artists=metadata.get("artists", [])
-    )
+    manager.add_manga(manga_id, title, section, tag_list, portada)
 
 @app.command()
 def delete_manga(
@@ -69,25 +44,13 @@ def import_drive(
     latest = drive_importer.import_chapters(folder_id, manga_id)
     if latest:
         typer.echo(f"Successfully imported chapters. Latest is {latest}.")
+        # Optionally update catalog automatically
         cat = manager.load_catalogo()
         for item in cat["items"]:
             if item["mangaId"] == manga_id:
                 item["latest"] = f"Capítulo {latest}"
                 break
         manager.save_catalogo(cat)
-
-@app.command()
-def merge(
-    target_dir: str = typer.Argument(..., help="Target directory for merged files"),
-    sources: List[str] = typer.Argument(..., help="Source directories to merge"),
-):
-    """
-    Merges multiple chapter folders or images.json files.
-    """
-    if all(s.endswith(".json") for s in sources):
-        merger.merge_json(sources, target_dir)
-    else:
-        merger.merge_folders(sources, target_dir)
 
 @app.command()
 def rebuild():

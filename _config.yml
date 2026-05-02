@@ -1,38 +1,23 @@
-# --- Identidad del sitio ---
-title: "Project MURA"
-description: "Página de Project Mura"
-url: "https://Jhoorodre.github.io"
-baseurl: "/project-mura"
-
-# --- Build / Markdown ---
+title: Project MURA
+description: Página de Project Mura
+url: https://Jhoorodre.github.io
+baseurl: /project-mura
 markdown: kramdown
 kramdown:
   input: GFM
-
-# Páginas bonitas (/ruta/ en vez de .html)
 permalink: pretty
-
-# Tema que está usando Actions
 theme: jekyll-theme-primer
-
-# Plugins soportados por GitHub Pages (opcional)
 plugins:
-  - jekyll-seo-tag
-  - jekyll-feed
-  - jekyll-sitemap
-
-# --- Collections para las carpetas de series ---
+- jekyll-seo-tag
+- jekyll-feed
+- jekyll-sitemap
 collections:
-#activos
   witchriv:
     output: true
     permalink: /witchriv/:name/
   goldship:
     output: true
     permalink: /goldship/:name/
-  #"100novias":            # clave entre comillas por empezar con número
-    #output: true
-    #permalink: /100novias/:name/
   megami:
     output: true
     permalink: /megami-no-cafe/:name/
@@ -63,8 +48,6 @@ collections:
   ending-maker:
     output: true
     permalink: /ending-maker/:name/
-
-#joints
   medalist:
     output: true
     permalink: /medalist/:name/
@@ -74,7 +57,6 @@ collections:
   heisei-haizanhei:
     output: true
     permalink: /heisei-haizanhei/:name/
-    #-> Mangas de Naoto
   mangaka:
     output: true
     permalink: /mangaka/:name/
@@ -87,11 +69,9 @@ collections:
   dragemis:
     output: true
     permalink: /dragemis/:name/
-  no-se-si-es-amor-pero: # -> triple joint
+  no-se-si-es-amor-pero:
     output: true
     permalink: /no-se-si-es-amor-pero/:name/
-
-#terminados
   ririsa:
     output: true
     permalink: /ririsa/:name/
@@ -101,142 +81,120 @@ collections:
   komi:
     output: true
     permalink: /komi/:name/
-  oshi-no-ko:
-    output: true
-    permalink: /oshi-no-ko/:name/
   nitamono-doushi:
     output: true
     permalink: /nitamono-doushi/:name/
   inori-no-nai:
     output: true
     permalink: /inori-no-nai/:name/
-  
-
-# --- Defaults: aplica layout caps automáticamente dentro de cada colección ---
 defaults:
-# activos
-  - scope:
-      type: ore-no-ichizu-jama
-    values:
-      layout: caps
-  - scope:
-      type: witchriv
-    values:
-      layout: caps
-  - scope:
-      type: goldship
-    values:
-      layout: caps
-  - scope:
-      type: "100novias"
-    values:
-      layout: caps
-  - scope:
-      type: megami
-    values:
-      layout: caps
-  - scope:
-      type: dream
-    values:
-      layout: caps
-  - scope:
-      type: shiori-experience
-    values:
-      layout: caps
-  - scope:
-      type: idolatry
-    values:
-      layout: caps
-  - scope:
-      type: umine
-    values:
-      layout: caps
-  - scope:
-      type: hatori-to-furuta
-    values:
-      layout: caps
-  - scope:
-      type: eleven
-    values:
-      layout: caps
-  - scope:
-      type: horizon
-    values:
-      layout: caps
-  - scope:
-      type: ending-maker
-    values:
-      layout: caps
-  
-# joints
-  - scope:
-      type: medalist
-    values:
-      layout: caps
-  - scope:
-      type: marchen-crown
-    values:
-      layout: caps
-  - scope:
-      type: heisei-haizanhei
-    values:
-      layout: caps
-    #-> Mangas de Naoto
-  - scope:
-      type: mangaka
-    values:
-      layout: caps
-  - scope:
-      type: akumade
-    values:
-      layout: caps
-  - scope:
-      type: maou
-    values:
-      layout: caps
-  - scope:
-      type: dragemis
-    values:
-      layout: caps
-  #el de triple joint
-  - scope:
-      type: no-se-si-es-amor-pero
-    values:
-      layout: caps
-  
-# terminados
-  - scope:
-      type: saneka
-    values:
-      layout: caps
-  - scope:
-      type: komi
-    values:
-      layout: caps
-  - scope:
-      type: oshi-no-ko
-    values:
-      layout: caps
-  - scope:
-      type: ririsa
-    values:
-      layout: caps
-  - scope:
-      type: inori-no-nai
-    values:
-      layout: caps
-  - scope:
-      type: nitamono-doushi
-    values:
-      layout: caps
-
-# --- Archivos/carpetas a excluir del build (se amplía si hace falta) ---
+- scope:
+    type: ore-no-ichizu-jama
+  values:
+    layout: caps
+- scope:
+    type: witchriv
+  values:
+    layout: caps
+- scope:
+    type: goldship
+  values:
+    layout: caps
+- scope:
+    type: 100novias
+  values:
+    layout: caps
+- scope:
+    type: megami
+  values:
+    layout: caps
+- scope:
+    type: dream
+  values:
+    layout: caps
+- scope:
+    type: shiori-experience
+  values:
+    layout: caps
+- scope:
+    type: idolatry
+  values:
+    layout: caps
+- scope:
+    type: umine
+  values:
+    layout: caps
+- scope:
+    type: hatori-to-furuta
+  values:
+    layout: caps
+- scope:
+    type: eleven
+  values:
+    layout: caps
+- scope:
+    type: horizon
+  values:
+    layout: caps
+- scope:
+    type: ending-maker
+  values:
+    layout: caps
+- scope:
+    type: medalist
+  values:
+    layout: caps
+- scope:
+    type: marchen-crown
+  values:
+    layout: caps
+- scope:
+    type: heisei-haizanhei
+  values:
+    layout: caps
+- scope:
+    type: mangaka
+  values:
+    layout: caps
+- scope:
+    type: akumade
+  values:
+    layout: caps
+- scope:
+    type: maou
+  values:
+    layout: caps
+- scope:
+    type: dragemis
+  values:
+    layout: caps
+- scope:
+    type: no-se-si-es-amor-pero
+  values:
+    layout: caps
+- scope:
+    type: saneka
+  values:
+    layout: caps
+- scope:
+    type: komi
+  values:
+    layout: caps
+- scope:
+    type: ririsa
+  values:
+    layout: caps
+- scope:
+    type: inori-no-nai
+  values:
+    layout: caps
+- scope:
+    type: nitamono-doushi
+  values:
+    layout: caps
 exclude:
-  - node_modules
-  - vendor
-  - README.md
-
-
-# --- Incluir explícitamente assets si lo necesita ---
+- node_modules
+- vendor
+- README.md
 include:
-  - assets
+- assets

@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: mura-cli
+Version: 0.1.0
+Summary: CLI and TUI automation tool for Project Mura
+Author-email: project mura <secular-fox-opium@proton.me>
+Requires-Dist: typer[all]
+Requires-Dist: textual
+Requires-Dist: requests
+Requires-Dist: httpx
+Requires-Dist: GitPython
+Requires-Dist: pyyaml

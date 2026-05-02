@@ -1,10 +1,10 @@
 {
   "items": [
     {
-      "mangaId": "Regression of the Close Combat Mage",
+      "mangaId": "regression-of-the-close-combat-mage",
       "title": "Regression of the Close Combat Mage",
-      "post_url": "/Regression of the Close Combat Mage/inicio",
-      "portada": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx182950-POYNdLwN7AOe.jpg",
+      "post_url": "/regression-of-the-close-combat-mage/inicio",
+      "portada": "/assets/img/regression-of-the-close-combat-mage-cover.jpg",
       "tags": [
         "Action",
         "Adventure",

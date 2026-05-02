@@ -87,9 +87,9 @@ collections:
   inori-no-nai:
     output: true
     permalink: /inori-no-nai/:name/
-  Regression of the Close Combat Mage:
+  regression-of-the-close-combat-mage:
     output: true
-    permalink: /Regression of the Close Combat Mage/:name/
+    permalink: /regression-of-the-close-combat-mage/:name/
 defaults:
 - scope:
     type: ore-no-ichizu-jama
@@ -196,7 +196,7 @@ defaults:
   values:
     layout: caps
 - scope:
-    type: Regression of the Close Combat Mage
+    type: regression-of-the-close-combat-mage
   values:
     layout: caps
 exclude:

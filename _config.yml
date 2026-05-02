@@ -1,8 +1,8 @@
 # --- Identidad del sitio ---
-title: "EnchiladaWEB"
-description: "Pagina de EnchiladaNoSekai"
-url: "https://enchiladaScan.github.io"
-baseurl: "/enchiladaweb"
+title: "Project MURA"
+description: "Página de Project Mura"
+url: "https://Jhoorodre.github.io"
+baseurl: "/project-mura"
 
 # --- Build / Markdown ---
 markdown: kramdown

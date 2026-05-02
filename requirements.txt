@@ -1,0 +1,6 @@
+typer[all]
+textual
+requests
+httpx
+GitPython
+pyyaml

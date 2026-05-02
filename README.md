@@ -1,4 +1,4 @@
-# Pagina del scan EnchiladaNoSekai
+# Project Mura - Scanlation Reader
 
 Página del scan, no hay más que decir.
 

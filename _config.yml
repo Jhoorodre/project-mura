@@ -60,6 +60,9 @@ collections:
   horizon:
     output: true
     permalink: /horizon/:name/
+  ending-maker:
+    output: true
+    permalink: /ending-maker/:name/
 
 #joints
   medalist:
@@ -158,6 +161,10 @@ defaults:
       layout: caps
   - scope:
       type: horizon
+    values:
+      layout: caps
+  - scope:
+      type: ending-maker
     values:
       layout: caps
   

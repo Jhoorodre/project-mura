@@ -1,0 +1,14 @@
+---
+layout: reader
+title: "Capítulo 41"
+manga: "ending-maker"
+manga_slug: "ending-maker"
+capitulo: 41
+es_primero: false
+es_ultimo: false
+permalink: /ending-maker/cap41/
+return_to: /ending-maker/
+images_json: assets/mangas/ending-maker/cap41/images.json
+use_main_css: true
+next_href: /ending-maker/cap42/
+---

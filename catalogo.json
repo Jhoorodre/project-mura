@@ -1,6 +1,21 @@
 {
   "items": [
     {
+      "mangaId": "ending-maker",
+      "title": "Ending Maker",
+      "post_url": "/ending-maker/inicio",
+      "portada": "/assets/img/Ending-Maker.png",
+      "tags": [
+        "Action",
+        "Adventure",
+        "Comedy",
+        "Fantasy",
+        "Romance"
+      ],
+      "latest": "Capítulo 70",
+      "seccion": "activos"
+    },
+    {
       "mangaId": "ririsa",
       "title": "2.5 Dimensional Seduction (Ririsa)",
       "post_url": "/ririsa/inicio",

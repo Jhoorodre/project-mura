@@ -7,6 +7,7 @@ from mura_cli.core.fetcher import MetadataFetcher
 from mura_cli.core.importer import DriveImporter
 from mura_cli.core.merger import ChapterMerger
 import asyncio
+import pyperclip
 
 manager = ProjectManager()
 fetcher = MetadataFetcher()
@@ -40,7 +41,7 @@ class MangaListScreen(Static):
     def on_data_table_row_selected(self, event: DataTable.RowSelected) -> None:
         manga_id = str(event.row_key.value)
         self.app.selected_manga_id = manga_id
-        self.app.switch_to("manage")
+        self.app.action_switch_to("manage")
 
 class AddMangaForm(Static):
     """A form to add a new manga."""
@@ -71,7 +72,6 @@ class AddMangaForm(Static):
                 return
             
             self.query_one("#status-msg").update("Searching all APIs...")
-            # Run fetch in thread to avoid UI freeze
             loop = asyncio.get_event_loop()
             metadata = await loop.run_in_executor(None, fetcher.auto_fill, m_id, m_id)
             
@@ -95,7 +95,7 @@ class AddMangaForm(Static):
             self.post_message(self.MangaAdded())
         
         elif event.button.id == "btn-cancel":
-            self.app.switch_to("list")
+            self.app.action_switch_to("list")
 
 class ManageMangaScreen(Static):
     """Screen to manage a specific manga (Drive import, edit, etc)."""
@@ -111,6 +111,7 @@ class ManageMangaScreen(Static):
                 yield Button("Sync to GitHub", variant="default", id="btn-sync")
             yield Label("Operation Log:")
             yield Log(id="op-log")
+            yield Button("Copy Log to Clipboard", id="btn-copy-log")
             yield Button("Back to List", id="btn-back")
 
     def update_info(self) -> None:
@@ -163,12 +164,15 @@ class ManageMangaScreen(Static):
                 manager.save_catalogo(cat)
         
         elif event.button.id == "btn-rebuild":
-            # Using absolute path to venv jekyll or system jekyll
             await self.run_process(["bundle", "exec", "jekyll", "build"], "Jekyll Build")
             
         elif event.button.id == "btn-sync":
-            # Call mura sync command from venv
             await self.run_process(["./.venv/bin/mura", "sync"], "Git Sync")
+
+        elif event.button.id == "btn-copy-log":
+            log_content = "\n".join(log.lines)
+            pyperclip.copy(log_content)
+            self.app.notify("Log copied to clipboard!")
 
         elif event.button.id == "btn-back":
             self.app.switch_to("list")
@@ -212,7 +216,7 @@ class MergeScreen(Static):
                 self.query_one("#merge-status").update("Folder Merge Complete!")
                 
         elif event.button.id == "btn-back-from-merge":
-            self.app.switch_to("list")
+            self.app.action_switch_to("list")
 
 class MuraTUI(App):
     """Main Application for Project Mura Management."""
@@ -241,13 +245,13 @@ class MuraTUI(App):
         margin-top: 1;
     }
     #manage-title {
-        font-size: 150%;
+        text-style: bold;
         margin-bottom: 1;
         color: #bb9af7;
     }
     #op-log {
         height: 10;
-        border: inset #3b4261;
+        border: tall #3b4261;
         background: #16161e;
         color: #c0caf5;
         margin: 1 0;
@@ -275,7 +279,7 @@ class MuraTUI(App):
             yield MergeScreen(id="merge")
         yield Footer()
 
-    def switch_to(self, target: str) -> None:
+    def action_switch_to(self, target: str) -> None:
         self.query_one(ContentSwitcher).current = target
         if target == "list":
             self.query_one(MangaListScreen).refresh_list()
@@ -283,7 +287,7 @@ class MuraTUI(App):
             self.query_one(ManageMangaScreen).update_info()
 
     def on_add_manga_form_manga_added(self, message: AddMangaForm.MangaAdded) -> None:
-        self.switch_to("list")
+        self.action_switch_to("list")
 
 if __name__ == "__main__":
     app = MuraTUI()

@@ -22,62 +22,86 @@ class DriveImporter:
         items = []
         seen_ids = set()
         
-        if use_embedded:
-            matches = re.findall(r'href="https://drive\.google\.com/drive/folders/([a-zA-Z0-9_-]{28,35})"[^>]*>.*?<div[^>]*>([^<]+)</div>', content, re.S)
-            for item_id, name in matches:
-                if item_id not in seen_ids:
-                    items.append({"id": item_id, "name": name.strip()})
-                    seen_ids.add(item_id)
-            
-            matches_files = re.findall(r'href="https://drive\.google\.com/file/d/([a-zA-Z0-9_-]{28,35})"[^>]*>.*?<div[^>]*>([^<]+)</div>', content, re.S)
-            for item_id, name in matches_files:
-                if item_id not in seen_ids:
-                    items.append({"id": item_id, "name": name.strip()})
-                    seen_ids.add(item_id)
-        else:
-            p1 = r'\["([a-zA-Z0-9_-]{28,35})",\["([a-zA-Z0-9_-]{28,35})"\]\s*,\s*"([^"]+)"'
-            matches = re.findall(p1, content)
-            for item_id, parent, name in matches:
-                if parent == folder_id and item_id not in seen_ids:
-                    items.append({"id": item_id, "name": name})
-                    seen_ids.add(item_id)
-            
-            if not items:
-                matches = re.findall(r'data-id="([a-zA-Z0-9_-]{28,35})".*?data-tooltip="([^"]+)"', content, re.S)
-                for item_id, tooltip in matches:
-                    if item_id not in seen_ids:
-                        name = re.sub(r' (Shared folder|Image|Folder|Video)$', '', tooltip)
+        # 1. Standard internal JSON pattern (often limited to 50)
+        p1 = r'\["([a-zA-Z0-9_-]{28,35})",\["([a-zA-Z0-9_-]{28,35})"\]\s*,\s*"([^"]+)"'
+        matches = re.findall(p1, content)
+        for item_id, parent, name in matches:
+            if parent == folder_id and item_id not in seen_ids:
+                items.append({"id": item_id, "name": name})
+                seen_ids.add(item_id)
+        
+        # 2. Embedded view pattern (often contains up to 200 items)
+        matches_emb = re.findall(r'href="https://drive\.google\.com/drive/folders/([a-zA-Z0-9_-]{28,35})"[^>]*>.*?<div[^>]*>([^<]+)</div>', content, re.S)
+        for item_id, name in matches_emb:
+            if item_id not in seen_ids:
+                items.append({"id": item_id, "name": name.strip()})
+                seen_ids.add(item_id)
+
+        # 3. Aggressive catch-all for IDs linked with names (for files/images)
+        # This helps if the folder contains files instead of subfolders
+        matches_files = re.findall(r'data-id="([a-zA-Z0-9_-]{28,35})".*?data-tooltip="([^"]+)"', content, re.S)
+        for item_id, tooltip in matches_files:
+            if item_id not in seen_ids:
+                name = re.sub(r' (Shared folder|Image|Folder|Video)$', '', tooltip)
+                items.append({"id": item_id, "name": name})
+                seen_ids.add(item_id)
+
+        # 4. Search for secondary data chunks (AF_initDataCallback)
+        # GDrive often stores more data in these chunks
+        chunks = re.findall(r'AF_initDataCallback\({key:.*?, hash:.*?, data:(.*?), sideChannel:.*?}\);', content)
+        for chunk in chunks:
+            try:
+                # This is messy because it's not strict JSON, but let's try to extract IDs and names
+                # Pattern for IDs and names inside lists
+                potential_matches = re.findall(r'["\']([a-zA-Z0-9_-]{28,35})["\'],\[["\']([a-zA-Z0-9_-]{28,35})["\']\],["\']([^"\']+)["\']', chunk)
+                for item_id, parent, name in potential_matches:
+                    if parent == folder_id and item_id not in seen_ids:
                         items.append({"id": item_id, "name": name})
                         seen_ids.add(item_id)
+            except:
+                continue
 
         return items
 
     def import_chapters(self, parent_id: str, manga_slug: str, root_path: str = "."):
-        print(f"Fetching chapters from folder {parent_id}...")
-        folders = self.get_drive_data(parent_id, use_embedded=False)
-        folders_emb = self.get_drive_data(parent_id, use_embedded=True)
+        print(f"Scanning folder {parent_id} for chapters...")
+        # Try multiple views to maximize results
+        all_items = []
+        all_items.extend(self.get_drive_data(parent_id, use_embedded=False))
+        all_items.extend(self.get_drive_data(parent_id, use_embedded=True))
         
-        all_folders = folders + folders_emb
         seen_ids = set()
         unique_folders = []
-        for f in all_folders:
+        for f in all_items:
             if f['id'] not in seen_ids:
                 unique_folders.append(f)
                 seen_ids.add(f['id'])
         
         chapters = []
         for f in unique_folders:
-            match = re.search(r'Cap\s*([0-9.]+)', f['name'], re.I)
+            # Match Cap 000, Capítulo 1, etc.
+            match = re.search(r'(?:Cap|Capítulo|Chapter)\s*([0-9.]+)', f['name'], re.I)
             if match:
                 num_str = match.group(1)
-                clean_num = str(float(num_str)).replace('.0', '') if '.' in num_str else str(int(num_str))
-                chapters.append({
-                    "id": f['id'],
-                    "name": f['name'],
-                    "num_str": clean_num,
-                    "num_float": float(num_str)
-                })
+                try:
+                    num_float = float(num_str)
+                    clean_num = str(num_float).replace('.0', '') if '.' in num_str else str(int(num_float))
+                    chapters.append({
+                        "id": f['id'],
+                        "name": f['name'],
+                        "num_str": clean_num,
+                        "num_float": num_float
+                    })
+                except ValueError:
+                    continue
         
+        if not chapters:
+            print("No chapters detected. Listing items found for debugging:")
+            for item in unique_folders[:10]:
+                print(f"  - {item['name']} (ID: {item['id']})")
+            return None
+
+        # Deduplicate and sort
         chapters_dict = {c['num_float']: c for c in chapters}
         chapters = sorted(chapters_dict.values(), key=lambda x: x['num_float'])
         
@@ -88,18 +112,24 @@ class DriveImporter:
             cap_slug = f"cap{cap_num}".replace('.', '_')
             print(f"Processing Capítulo {cap_num}...")
             
-            files = self.get_drive_data(cap['id'], use_embedded=False)
-            if len(files) < 2:
-                files_emb = self.get_drive_data(cap['id'], use_embedded=True)
-                files.extend(files_emb)
-                
-            seen_file_ids = set()
-            unique_files = [f for f in files if f['id'] not in seen_file_ids and not seen_file_ids.add(f['id'])]
-                
-            images = [f for f in unique_files if re.search(r'\.(jpg|jpeg|png|webp|bmp|gif)$', f['name'], re.I) or f['name'].isdigit()]
+            # Get images for this chapter
+            images_data = []
+            images_data.extend(self.get_drive_data(cap['id'], use_embedded=False))
+            images_data.extend(self.get_drive_data(cap['id'], use_embedded=True))
+            
+            seen_img_ids = set()
+            images = []
+            for img in images_data:
+                if img['id'] not in seen_img_ids:
+                    if re.search(r'\.(jpg|jpeg|png|webp|bmp|gif)$', img['name'], re.I) or img['name'].isdigit():
+                        images.append(img)
+                        seen_img_ids.add(img['id'])
+            
+            # Sort images by name
             images.sort(key=lambda x: [int(s) if s.isdigit() else s.lower() for s in re.split('([0-9]+)', x['name'])])
             
             if not images:
+                print(f"  Warning: No images found in {cap['name']}")
                 continue
                 
             dest_dir = f"assets/mangas/{manga_slug}/{cap_slug}"
@@ -126,7 +156,9 @@ use_main_css: true
 next_href: {next_href}
 ---
 """
-            with open(os.path.join(root_path, f"_{manga_slug}", f"cap{cap_num}-{manga_slug}.md"), "w") as m:
+            manga_folder = os.path.join(root_path, f"_{manga_slug}")
+            os.makedirs(manga_folder, exist_ok=True)
+            with open(os.path.join(manga_folder, f"cap{cap_num}-{manga_slug}.md"), "w") as m:
                 m.write(md_content)
 
         return chapters[-1]['num_str'] if chapters else None

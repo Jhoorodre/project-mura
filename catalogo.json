@@ -1,6 +1,19 @@
 {
   "items": [
     {
+      "mangaId": "Regression of the Close Combat Mage",
+      "title": "Regression of the Close Combat Mage",
+      "post_url": "/Regression of the Close Combat Mage/inicio",
+      "portada": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx182950-POYNdLwN7AOe.jpg",
+      "tags": [
+        "Action",
+        "Adventure",
+        "Fantasy"
+      ],
+      "latest": "Capítulo 50",
+      "seccion": "activos"
+    },
+    {
       "mangaId": "ending-maker",
       "title": "Ending Maker",
       "post_url": "/ending-maker/inicio",

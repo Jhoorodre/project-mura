@@ -36,15 +36,15 @@ layout: default
         <img src="{{ page.portada | default: '/assets/img/placeholder-cover.png' | relative_url }}"
           alt="Portada de {{ page.title }}"
           onerror="this.onerror=null; this.src='{{ '/assets/img/placeholder-cover.png' | relative_url }}'">
-        <a class="btn-back" href="{{ site.baseurl }}/">Volver al inicio</a>
+        <a class="btn-back" href="{{ site.baseurl }}/">Voltar ao início</a>
       </div>
       {% include manga_ficha.html %}
     </div>
 
     <div class="list-header">
-      <h2>Ver capítulos aquí:</h2>
+      <h2>Ver capítulos aqui:</h2>
       {% if chapters.size > min_items_to_sort %}
-      <button id="sortButton" class="sort-button">Orden: Descendente</button>
+      <button id="sortButton" class="sort-button">Ordem: Decrescente</button>
       {% endif %}
     </div>
     <ul id="chaptersList">
@@ -58,13 +58,13 @@ layout: default
       </li>
       {% endfor %}
       {% else %}
-      <li class="no-links">Aún no hay capítulos de este manga.</li>
+      <li class="no-links">Ainda não há capítulos deste mangá.</li>
       {% endif %}
     </ul>
     </section>
 
     <section id="links-de-descarga" class="ui-block">
-      <h3>Links de descarga</h3>
+      <h3>Links de download</h3>
       {% if page.links_descarga and page.links_descarga.size > 0 %}
       <ul id="downloadsList" class="manga-dl">
         {% for l in page.links_descarga %}
@@ -76,7 +76,7 @@ layout: default
         {% endfor %}
       </ul>
       {% else %}
-      <p class="no-links">No hay descargas disponibles por el momento.</p>
+      <p class="no-links">Não há downloads disponíveis no momento.</p>
       {% endif %}
     </section>
 
@@ -96,7 +96,7 @@ layout: default
     </section>
     {% endif %}
 
-    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema">
+    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Mudar tema">
       <img src="{{ site.baseurl }}/assets/img/foco.png" alt="Icono Foco" id="theme-icon">
     </button>
 
@@ -147,7 +147,7 @@ layout: default
       sortBtn.addEventListener('click', function () {
         listIds.forEach(reverseList);
         isReversed = !isReversed;
-        sortBtn.textContent = isReversed ? 'Orden: Ascendente' : 'Orden: Descendente';
+        sortBtn.textContent = isReversed ? 'Ordem: Crescente' : 'Ordem: Decrescente';
       });
     }
   });

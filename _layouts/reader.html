@@ -4,7 +4,7 @@ use_theme: false
 ---
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="pt-BR">
 
 <head>
   <meta charset="utf-8">
@@ -212,7 +212,7 @@ use_theme: false
       <div class="reader-sub">
         Capítulo {{ page.capitulo_label | default: page.capitulo | default: "?" }}
       </div>
-      <div id="pager" class="pager">Pag 0 / 0</div>
+      <div id="pager" class="pager">Pág 0 / 0</div>
     </header>
 
     <div id="reader" class="reader"></div>
@@ -220,7 +220,7 @@ use_theme: false
     <a class="back" href="{{ page.post_url | default: page.return_to | default: '/' | relative_url }}">
       <img class="ico" src="{{ '/assets/img/icons/regresar.png' | relative_url }}" alt=""
         onerror="this.closest('.ico-btn').classList.add('no-icon')">
-      <span class="label">← Regresar al post</span>
+      <span class="label">← Voltar à página</span>
     </a>
   </div>
 
@@ -259,20 +259,20 @@ use_theme: false
     <a class="btn nav-zoom ico-btn" href="{{ page.next_href | relative_url }}">
       <img class="ico" src="{{ '/assets/img/icons/siguiente.png' | relative_url }}" alt=""
         onerror="this.remove();this.closest('a').classList.add('no-icon')">
-      <span class="label">Siguiente →</span>
+      <span class="label">Próximo →</span>
     </a>
     {%- elsif page.es_ultimo != true and page.capitulo -%}
     <a class="btn nav-zoom ico-btn"
       href="{{ '/' | append: page.manga_slug | append: '/cap' | append: next_num | append: '/' | relative_url }}">
       <img class="ico" src="{{ '/assets/img/icons/siguiente.png' | relative_url }}" alt=""
         onerror="this.remove();this.closest('a').classList.add('no-icon')">
-      <span class="label">Siguiente →</span>
+      <span class="label">Próximo →</span>
     </a>
     {%- endif -%}
     <a class="btn nav-zoom ico-btn" data-zoom="1.0">
       <img class="ico" src="{{ '/assets/img/icons/fullscreen.png' | relative_url }}" alt=""
         onerror="this.remove();this.closest('a').classList.add('no-icon')">
-      <span class="label">Pantalla Completa</span>
+      <span class="label">Tela Cheia</span>
     </a>
     <a class="btn nav-zoom ico-btn" data-zoom="0.8">
       <img class="ico" src="{{ '/assets/img/icons/zoom_in.png' | relative_url }}" alt=""
@@ -288,10 +288,10 @@ use_theme: false
       href="{% if page.manga_slug %}{{ '/' | append: page.manga_slug | append: '/inicio/' | relative_url }}{% else %}{{ '/' | append: page.collection | append: '/inicio/' | relative_url }}{% endif %}">
       <img class="ico" src="{{ '/assets/img/icons/regresar.png' | relative_url }}" alt=""
         onerror="this.remove();this.closest('a').classList.add('no-icon')">
-      <span class="label">← Regresar al post</span>
+      <span class="label">← Voltar à página</span>
     </a>
   </div>
-  <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema">
+  <button id="theme-toggle" class="theme-toggle-btn" aria-label="Mudar tema">
     <img src="{{ site.baseurl }}/assets/img/foco.png" alt="Icono Foco" id="theme-icon">
   </button>
 
@@ -428,7 +428,7 @@ use_theme: false
           ? data.map(u => ({ url: u }))
           : (Array.isArray(data.pages) ? data.pages : []);
 
-        if (!pagesOrdered.length) throw new Error('JSON vacío o formato no soportado');
+        if (!pagesOrdered.length) throw new Error('JSON vazio ou formato não suportado');
 
         const items = pagesOrdered.map((p, i) => {
           const fig = document.createElement('figure');
@@ -450,7 +450,7 @@ use_theme: false
         mount.textContent = '';
         mount.appendChild(frag);
 
-        pagerEl.textContent = `Pag ${items.length ? 1 : 0} / ${items.length}`;
+        pagerEl.textContent = `Pág ${items.length ? 1 : 0} / ${items.length}`;
 
         if ('IntersectionObserver' in window) {
           const io = new IntersectionObserver((entries) => {
@@ -458,7 +458,7 @@ use_theme: false
               .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
             if (vis) {
               const idx = items.findIndex(x => x.fig === vis.target);
-              if (idx >= 0) pagerEl.textContent = `Pag ${idx + 1} / ${items.length}`;
+              if (idx >= 0) pagerEl.textContent = `Pág ${idx + 1} / ${items.length}`;
             }
           }, { root: null, rootMargin: '0px 0px -40% 0px', threshold: [0.2, 0.4, 0.6] });
           items.forEach(it => io.observe(it.fig));
@@ -504,7 +504,7 @@ use_theme: false
 
           const warn = document.createElement('div');
           warn.className = 'error';
-          warn.textContent = `⚠️ No se pudo cargar la página ${it.index + 1}`;
+          warn.textContent = `⚠️ Não foi possível carregar a página ${it.index + 1}`;
           it.fig.insertBefore(warn, it.fig.firstChild);
         }
 
@@ -522,8 +522,8 @@ use_theme: false
       } catch (err) {
         const mount = document.getElementById('reader');
         const pagerEl = document.getElementById('pager');
-        if (mount) mount.innerHTML = `<p class="error">No se pudieron cargar las imágenes. ${err.message}</p>`;
-        if (pagerEl) pagerEl.textContent = 'Pag 0 / 0';
+        if (mount) mount.innerHTML = `<p class="error">Não foi possível carregar as imagens. ${err.message}</p>`;
+        if (pagerEl) pagerEl.textContent = 'Pág 0 / 0';
       }
     })();
   </script>

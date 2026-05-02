@@ -21,7 +21,7 @@ header_kind: home
       <div class="welcome-banner">
         <picture>
           <source media="(max-width: 768px)" srcset="{{ site.baseurl }}/assets/img/welcome-cel.jpg">
-          <img src="{{ site.baseurl }}/assets/img/welcome.jpg" alt="Bienvenidos a Project Mura">
+          <img src="{{ site.baseurl }}/assets/img/welcome.jpg" alt="Bem-vindos ao Project Mura">
         </picture>
       </div>
       <div class="home-layout">
@@ -29,7 +29,7 @@ header_kind: home
         <div class="main-content">
           <div class="section-title">
             <span class="bar"></span>
-            <h2>Activos</h2>
+            <h2>Em andamento</h2>
           </div>
           <div class="grid" id="grid-activos"></div>
 
@@ -41,7 +41,7 @@ header_kind: home
 
           <div class="section-title">
             <span class="bar" style="background: #10b981;"></span>
-            <h2>Terminados</h2>
+            <h2>Finalizados</h2>
           </div>
           <div class="grid" id="grid-terminados"></div>
         </div>
@@ -51,7 +51,7 @@ header_kind: home
             <h2>Últimos tweets</h2>
           </div>
 
-          <div class="viewport" id="viewport" title="Pasa el puntero para pausar">
+          <div class="viewport" id="viewport" title="Passe o cursor para pausar">
             <div class="scroller" id="scroller">
               <div class="tape" id="tapeA"></div>
               <div class="tape" id="tapeB"></div>
@@ -61,7 +61,7 @@ header_kind: home
         </aside>
       </div>
 
-      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Mudar tema">
         <img src="{{ site.baseurl }}/assets/img/foco.png" alt="Icono Foco" id="theme-icon">
       </button>
 
@@ -107,14 +107,14 @@ header_kind: home
           const PLACEHOLDER = '/assets/img/cargando_gato.gif';
 
           const SECTIONS = [
-            { key: 'activos', el: 'grid-activos', titleEmpty: 'No hay series activas por el momento.' },
-            { key: 'joints', el: 'grid-joints', titleEmpty: 'No hay JOINTS por el momento.' },
-            { key: 'terminados', el: 'grid-terminados', titleEmpty: 'No hay series terminadas por el momento.' }
+            { key: 'activos', el: 'grid-activos', titleEmpty: 'Nenhuma série ativa no momento.' },
+            { key: 'joints', el: 'grid-joints', titleEmpty: 'Nenhuma parceria no momento.' },
+            { key: 'terminados', el: 'grid-terminados', titleEmpty: 'Nenhuma série finalizada no momento.' }
           ];
 
           try {
             const res = await fetch(CATALOG_URL, { cache: 'no-store' });
-            if (!res.ok) throw new Error('No se pudo cargar catalogo.json');
+            if (!res.ok) throw new Error('Não foi possível carregar catalogo.json');
             const data = await res.json();
 
             let items = [];
@@ -135,7 +135,7 @@ header_kind: home
             console.error(err);
             for (const sec of SECTIONS) {
               const el = document.getElementById(sec.el);
-              if (el) el.insertAdjacentHTML('beforebegin', `<p class="no-links">No se pudo cargar el catálogo.</p>`);
+              if (el) el.insertAdjacentHTML('beforebegin', `<p class="no-links">Não foi possível carregar o catálogo.</p>`);
             }
           }
 

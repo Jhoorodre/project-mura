@@ -4,19 +4,19 @@
   <ul class="manga-meta-list">
     {% if page.autor %}<li><strong>Autor:</strong> {{ page.autor }}</li>{% endif %}
     {% if page.artista %}<li><strong>Arte:</strong> {{ page.artista }}</li>{% endif %}
-    {% if page.editorial %}<li><strong>Editorial:</strong> {{ page.editorial }}</li>{% endif %}
-    {% if page.generos %}<li><strong>Géneros:</strong> {{ page.generos | join: ', ' }}</li>{% endif %}
-    {% if page.estado %}<li><strong>Estado:</strong> {{ page.estado }}</li>{% endif %}
-    {% if page.anio %}<li><strong>Año:</strong> {{ page.anio }}</li>{% endif %}
+    {% if page.editorial %}<li><strong>Editora:</strong> {{ page.editorial }}</li>{% endif %}
+    {% if page.generos %}<li><strong>Gêneros:</strong> {{ page.generos | join: ', ' }}</li>{% endif %}
+    {% if page.estado %}<li><strong>Status:</strong> {{ page.estado }}</li>{% endif %}
+    {% if page.anio %}<li><strong>Ano:</strong> {{ page.anio }}</li>{% endif %}
   </ul>
 
   {% if page.sinopsis %}
-    <h3>Sinopsis</h3>
+    <h3>Sinopse</h3>
     <p class="manga-sinopsis">{{ page.sinopsis }}</p>
   {% endif %}
 
   {% if page.links_descarga and page.show_links_en_ficha != false %}
-    <h3>Descargas</h3>
+    <h3>Downloads</h3>
     <ul class="manga-dl">
       {% for l in page.links_descarga %}
         <li><a href="{{ l.url }}">{{ l.nombre }}</a></li>

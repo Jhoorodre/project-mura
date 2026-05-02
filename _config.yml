@@ -18,83 +18,22 @@ collections:
   goldship:
     output: true
     permalink: /goldship/:name/
-  megami:
-    output: true
-    permalink: /megami-no-cafe/:name/
-  dream-jumbo-girl:
-    output: true
-    permalink: /dream-jumbo/:name/
-  ore-no-ichizu-jama:
-    output: true
-    permalink: /ore-no-ichizu-jama/:name/
-  shiori-experience:
-    output: true
-    permalink: /shiori-experience/:name/
   hatori-to-furuta:
     output: true
     permalink: /hatori-to-furuta/:name/
   idolatry:
     output: true
     permalink: /idolatry/:name/
-  umine:
-    output: true
-    permalink: /umine/:name/
-  eleven:
-    output: true
-    permalink: /eleven/:name/
   horizon:
     output: true
     permalink: /horizon/:name/
   ending-maker:
     output: true
     permalink: /ending-maker/:name/
-  medalist:
-    output: true
-    permalink: /medalist/:name/
-  marchen-crown:
-    output: true
-    permalink: /marchen-crown/:name/
-  heisei-haizanhei:
-    output: true
-    permalink: /heisei-haizanhei/:name/
-  mangaka:
-    output: true
-    permalink: /mangaka/:name/
-  akumade:
-    output: true
-    permalink: /akumade/:name/
-  maou:
-    output: true
-    permalink: /maou/:name/
-  dragemis:
-    output: true
-    permalink: /dragemis/:name/
-  no-se-si-es-amor-pero:
-    output: true
-    permalink: /no-se-si-es-amor-pero/:name/
-  ririsa:
-    output: true
-    permalink: /ririsa/:name/
-  saneka:
-    output: true
-    permalink: /saneka/:name/
-  komi:
-    output: true
-    permalink: /komi/:name/
-  nitamono-doushi:
-    output: true
-    permalink: /nitamono-doushi/:name/
-  inori-no-nai:
-    output: true
-    permalink: /inori-no-nai/:name/
   regression-of-the-close-combat-mage:
     output: true
     permalink: /regression-of-the-close-combat-mage/:name/
 defaults:
-- scope:
-    type: ore-no-ichizu-jama
-  values:
-    layout: caps
 - scope:
     type: witchriv
   values:
@@ -108,15 +47,7 @@ defaults:
   values:
     layout: caps
 - scope:
-    type: megami
-  values:
-    layout: caps
-- scope:
     type: dream
-  values:
-    layout: caps
-- scope:
-    type: shiori-experience
   values:
     layout: caps
 - scope:
@@ -124,15 +55,7 @@ defaults:
   values:
     layout: caps
 - scope:
-    type: umine
-  values:
-    layout: caps
-- scope:
     type: hatori-to-furuta
-  values:
-    layout: caps
-- scope:
-    type: eleven
   values:
     layout: caps
 - scope:
@@ -141,58 +64,6 @@ defaults:
     layout: caps
 - scope:
     type: ending-maker
-  values:
-    layout: caps
-- scope:
-    type: medalist
-  values:
-    layout: caps
-- scope:
-    type: marchen-crown
-  values:
-    layout: caps
-- scope:
-    type: heisei-haizanhei
-  values:
-    layout: caps
-- scope:
-    type: mangaka
-  values:
-    layout: caps
-- scope:
-    type: akumade
-  values:
-    layout: caps
-- scope:
-    type: maou
-  values:
-    layout: caps
-- scope:
-    type: dragemis
-  values:
-    layout: caps
-- scope:
-    type: no-se-si-es-amor-pero
-  values:
-    layout: caps
-- scope:
-    type: saneka
-  values:
-    layout: caps
-- scope:
-    type: komi
-  values:
-    layout: caps
-- scope:
-    type: ririsa
-  values:
-    layout: caps
-- scope:
-    type: inori-no-nai
-  values:
-    layout: caps
-- scope:
-    type: nitamono-doushi
   values:
     layout: caps
 - scope:

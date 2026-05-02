@@ -29,44 +29,6 @@
       "seccion": "activos"
     },
     {
-      "mangaId": "ririsa",
-      "title": "2.5 Dimensional Seduction (Ririsa)",
-      "post_url": "/ririsa/inicio",
-      "portada": "/assets/img/ririsa-cover.jpg",
-      "tags": [
-        "romance",
-        "comedia"
-      ],
-      "latest": "Capítulo 201",
-      "seccion": "terminados"
-    },
-    {
-      "mangaId": "megami",
-      "title": "Megami no cafe terrace",
-      "post_url": "/megami-no-cafe/inicio",
-      "portada": "/assets/img/megami-cover.jpg",
-      "tags": [
-        "Comedia",
-        "Romance",
-        "Recuentos de la vida"
-      ],
-      "latest": "Capítulo 208",
-      "seccion": "terminados"
-    },
-    {
-      "mangaId": "dream-jumbo-girl",
-      "title": "Dream Jumbo Girl",
-      "post_url": "/dream-jumbo/inicio",
-      "portada": "/assets/img/dream-jumbo-cover.webp",
-      "tags": [
-        "Comedia",
-        "Romance",
-        "Deportes"
-      ],
-      "latest": "Capítulo ?",
-      "seccion": "activos"
-    },
-    {
       "mangaId": "goldship",
       "title": "Uma Musume: Pisupisu☆Supisupi Golshi-chan",
       "post_url": "/goldship/inicio",
@@ -94,20 +56,6 @@
       "seccion": "activos"
     },
     {
-      "mangaId": "shiori-experience",
-      "title": "Shiori Experience: Jimi na Watashi to Hen na Ojisan",
-      "post_url": "/shiori-experience/inicio",
-      "portada": "/assets/img/shiori-cover.jpg",
-      "tags": [
-        "Música",
-        "Comedia",
-        "Seinen",
-        "Sobrenatural"
-      ],
-      "latest": "Capítulo 83",
-      "seccion": "activos"
-    },
-    {
       "mangaId": "hatori-to-furuta",
       "title": "Hatori to Furuta no Hijōjō Sahanshi",
       "post_url": "/hatori-to-furuta/inicio",
@@ -119,20 +67,6 @@
         "Shonen"
       ],
       "latest": "Capítulo 11",
-      "seccion": "activos"
-    },
-    {
-      "mangaId": "ore-no-ichizu-jama",
-      "title": "Ore no Ichizu wo Jama Suru Aitsu",
-      "post_url": "/ore-no-ichizu-jama/inicio",
-      "portada": "/assets/img/ichizu-cover.jpg",
-      "tags": [
-        "Comedia",
-        "Romance",
-        "Escolar",
-        "Shonen"
-      ],
-      "latest": "Capítulo 4",
       "seccion": "activos"
     },
     {
@@ -150,34 +84,6 @@
       "seccion": "activos"
     },
     {
-      "mangaId": "umine",
-      "title": "La posada de Umine de aquella isla",
-      "post_url": "/umine/inicio",
-      "portada": "/assets/img/umine-cover.jpg",
-      "tags": [
-        "Música",
-        "Acción",
-        "Ciencia ficción",
-        "Shonen"
-      ],
-      "latest": "Capítulo 16",
-      "seccion": "activos"
-    },
-    {
-      "mangaId": "eleven",
-      "title": "Esa vez que reencarné en Winning Eleven.",
-      "post_url": "/eleven/inicio",
-      "portada": "/assets/img/eleven-cover.jpg",
-      "tags": [
-        "Comedia",
-        "Isekai",
-        "Videojuegos",
-        "Deportes"
-      ],
-      "latest": "Capítulo 1",
-      "seccion": "activos"
-    },
-    {
       "mangaId": "horizon",
       "title": "Horizon.",
       "post_url": "/horizon/inicio",
@@ -189,167 +95,6 @@
       ],
       "latest": "Capítulo 7",
       "seccion": "activos"
-    },
-    {
-      "mangaId": "nitamono-doushi",
-      "title": "Nitamono Doushi ((Not) Same Blue Youth)",
-      "post_url": "/nitamono-doushi/inicio",
-      "portada": "/assets/img/nitamono-doushi-cover.webp",
-      "tags": [
-        "Romance",
-        "Recuentos de la vida",
-        "Seinen",
-        "Drama"
-      ],
-      "latest": "Capítulo 1 (One-shot)",
-      "seccion": "terminados"
-    },
-    {
-      "mangaId": "inori-no-nai",
-      "title": "Inori no nai Tokoro ni (Nada de rezar)",
-      "post_url": "/inori-no-nai/inicio",
-      "portada": "/assets/img/nada-de-rezar-cover.jpg",
-      "tags": [
-        "Yuri",
-        "Drama",
-        "Recuentos de la vida",
-        "Seinen"
-      ],
-      "latest": "Capítulo 1 (One-shot)",
-      "seccion": "terminados"
-    },
-    {
-      "mangaId": "komi",
-      "title": "Komi Can't Communicate",
-      "post_url": "/komi/inicio",
-      "portada": "/assets/img/komi-cover.jpg",
-      "tags": [
-        "Comedia",
-        "Escolar",
-        "Slice of life"
-      ],
-      "latest": "Capítulo 500.10",
-      "seccion": "terminados"
-    },
-    {
-      "mangaId": "saneka",
-      "title": "My Marriage with Saneka",
-      "post_url": "/saneka/inicio",
-      "portada": "/assets/img/saneka-cover.webp",
-      "tags": [
-        "romance",
-        "comedia"
-      ],
-      "latest": "Capítulo 25",
-      "seccion": "terminados"
-    },
-    {
-      "mangaId": "no-se-si-es-amor-pero",
-      "title": "No se si es amor pero...",
-      "post_url": "/no-se-si-es-amor-pero/inicio",
-      "portada": "/assets/img/love-cover.jpg",
-      "tags": [
-        "Romance",
-        "Escolar",
-        "Slice of life"
-      ],
-      "latest": "Capítulo 5",
-      "seccion": "joints"
-    },
-    {
-      "mangaId": "marchen-crown",
-      "title": "Marchen Crown",
-      "post_url": "/marchen-crown/inicio",
-      "portada": "/assets/img/marchen-crown-cover.jpg",
-      "tags": [
-        "Aventura",
-        "Fantasia",
-        "Accion"
-      ],
-      "latest": "Capítulo 18",
-      "seccion": "joints"
-    },
-    {
-      "mangaId": "mangaka",
-      "title": "Uchikirare Mangaka to Doujin Onna",
-      "post_url": "/mangaka/inicio",
-      "portada": "/assets/img/mangaka-cover.png",
-      "tags": [
-        "Comedia",
-        "Drama"
-      ],
-      "latest": "Capítulo 5",
-      "seccion": "joints"
-    },
-    {
-      "mangaId": "akumade",
-      "title": "Akumade Sukisugiru dake",
-      "post_url": "/akumade/inicio",
-      "portada": "/assets/img/akumade-cover.jpg",
-      "tags": [
-        "Acción",
-        "Comedia",
-        "Drama",
-        "Psicologico",
-        "Romance",
-        "Suspenso"
-      ],
-      "latest": "Capítulo 1 (One-shot)",
-      "seccion": "joints"
-    },
-    {
-      "mangaId": "maou",
-      "title": "Maou no Musume wa, Shinitakunai",
-      "post_url": "/maou/inicio",
-      "portada": "/assets/img/maou-cover.jpg",
-      "tags": [
-        "Acción",
-        "Comedia",
-        "Fantasía"
-      ],
-      "latest": "Capítulo 1 (One-shot)",
-      "seccion": "joints"
-    },
-    {
-      "mangaId": "dragemis",
-      "title": "Dragemis",
-      "post_url": "/dragemis/inicio",
-      "portada": "/assets/img/dragemis-cover.jpg",
-      "tags": [
-        "Acción",
-        "Comedia",
-        "Fantasía",
-        "Aventura"
-      ],
-      "latest": "Capítulo 5",
-      "seccion": "joints"
-    },
-    {
-      "mangaId": "medalist",
-      "title": "Medalist",
-      "post_url": "/medalist/inicio",
-      "portada": "/assets/img/medalist-cover.jpg",
-      "tags": [
-        "Drama",
-        "Deportes",
-        "Psicológico"
-      ],
-      "latest": "Capítulo ?",
-      "seccion": "joints"
-    },
-    {
-      "mangaId": "heisei-haizanhei",
-      "title": "Heisei Haizanhei Sumire-chan",
-      "post_url": "/heisei-haizanhei/inicio",
-      "portada": "/assets/img/Heisei-cover.jpg",
-      "tags": [
-        "Comedia",
-        "Ecchi",
-        "Recuentos de la vida",
-        "Seinen"
-      ],
-      "latest": "Capítulo ?",
-      "seccion": "joints"
     }
   ]
 }

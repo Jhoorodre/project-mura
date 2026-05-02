@@ -1,6 +1,7 @@
 import json
 import yaml
 import os
+import requests
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from datetime import datetime
@@ -10,6 +11,35 @@ class ProjectManager:
         self.root = Path(root_path)
         self.catalogo_path = self.root / "catalogo.json"
         self.config_path = self.root / "_config.yml"
+
+    def download_image(self, url: str, manga_id: str) -> str:
+        """
+        Downloads a cover image from a URL and returns the local path.
+        """
+        if not url or not url.startswith("http"):
+            return url
+        
+        img_dir = self.root / "assets" / "img"
+        img_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Get extension
+        ext = ".jpg"
+        if ".png" in url.lower(): ext = ".png"
+        elif ".webp" in url.lower(): ext = ".webp"
+        
+        filename = f"{manga_id}-cover{ext}"
+        target_path = img_dir / filename
+        
+        try:
+            response = requests.get(url, timeout=15)
+            if response.status_code == 200:
+                with open(target_path, "wb") as f:
+                    f.write(response.content)
+                return f"/assets/img/{filename}"
+        except Exception as e:
+            print(f"Error downloading image: {e}")
+            
+        return url
 
     def load_catalogo(self) -> Dict[str, Any]:
         if not self.catalogo_path.exists():
@@ -38,15 +68,19 @@ class ProjectManager:
             yaml.safe_dump(data, f, allow_unicode=True, sort_keys=False)
 
     def add_manga(self, manga_id: str, title: str, section: str, tags: List[str], portada: str, synopsis: str = "", authors: List[str] = [], artists: List[str] = [], latest: str = "Novo"):
-        # 1. Update catalogo.json
+        # 0. Sanitize manga_id (slug)
+        manga_id = manga_id.lower().replace(" ", "-").replace("_", "-")
+        
+        # 1. Download cover locally
+        local_portada = self.download_image(portada, manga_id)
+
+        # 2. Update catalogo.json
         cat = self.load_catalogo()
         for item in cat.get("items", []):
             if item["mangaId"] == manga_id:
-                # Update existing instead of just returning? 
-                # For safety in bug hunt, let's update.
                 item.update({
                     "title": title,
-                    "portada": portada,
+                    "portada": local_portada,
                     "tags": tags,
                     "seccion": section
                 })
@@ -56,7 +90,7 @@ class ProjectManager:
                 "mangaId": manga_id,
                 "title": title,
                 "post_url": f"/{manga_id}/inicio",
-                "portada": portada,
+                "portada": local_portada,
                 "tags": tags,
                 "latest": latest,
                 "seccion": section
@@ -64,34 +98,22 @@ class ProjectManager:
             cat["items"].insert(0, new_item)
         self.save_catalogo(cat)
 
-        # 2. Update _config.yml
+        # 3. Update _config.yml
         config = self.load_config()
-        if "collections" not in config:
-            config["collections"] = {}
+        if "collections" not in config: config["collections"] = {}
+        config["collections"][manga_id] = {"output": True, "permalink": f"/{manga_id}/:name/"}
         
-        # Ensure it's in collections
-        config["collections"][manga_id] = {
-            "output": True,
-            "permalink": f"/{manga_id}/:name/"
-        }
-        
-        if "defaults" not in config:
-            config["defaults"] = []
-            
-        # Avoid duplicate defaults
+        if "defaults" not in config: config["defaults"] = []
         exists = any(d.get("scope", {}).get("type") == manga_id for d in config["defaults"])
         if not exists:
-            config["defaults"].append({
-                "scope": {"type": manga_id},
-                "values": {"layout": "caps"}
-            })
+            config["defaults"].append({"scope": {"type": manga_id}, "values": {"layout": "caps"}})
         self.save_config(config)
 
-        # 3. Create directory
+        # 4. Create directory
         manga_dir = self.root / f"_{manga_id}"
         manga_dir.mkdir(exist_ok=True)
         
-        # 4. Create inicio.md
+        # 5. Create inicio.md
         inicio_path = manga_dir / "inicio.md"
         date_str = datetime.now().strftime("%Y-%m-%d")
         
@@ -100,8 +122,8 @@ class ProjectManager:
             "title": title,
             "date": date_str,
             "series": manga_id,
-            "portada": portada,
-            "sinopsis": synopsis,
+            "portada": local_portada,
+            "sinopsis": synopsis or "",
             "autor": ", ".join(authors) if authors else "—",
             "artista": ", ".join(artists) if artists else "—",
             "generos": tags,
@@ -118,33 +140,39 @@ class ProjectManager:
             yaml.safe_dump(frontmatter, f, allow_unicode=True, sort_keys=False)
             f.write("---\n")
 
-        print(f"Manga {title} added successfully.")
+        print(f"Manga {title} processed successfully with local cover.")
 
     def delete_manga(self, manga_id: str):
-        # 1. Remove from catalogo.json
         cat = self.load_catalogo()
-        cat["items"] = [item for item in cat["items"] if item["mangaId"] != manga_id]
+        
+        # Find the cover path to delete
+        cover_path = None
+        for item in cat.get("items", []):
+            if item.get("mangaId") == manga_id:
+                cover_path = item.get("portada")
+                break
+
+        cat["items"] = [item for item in cat.get("items", []) if item.get("mangaId") != manga_id]
         self.save_catalogo(cat)
 
-        # 2. Remove from _config.yml
         config = self.load_config()
-        if "collections" in config and manga_id in config["collections"]:
-            del config["collections"][manga_id]
-        
-        if "defaults" in config:
-            config["defaults"] = [d for d in config["defaults"] if d.get("scope", {}).get("type") != manga_id]
+        if "collections" in config and manga_id in config["collections"]: del config["collections"][manga_id]
+        if "defaults" in config: config["defaults"] = [d for d in config["defaults"] if d.get("scope", {}).get("type") != manga_id]
         self.save_config(config)
 
-        # 3. Delete directory and assets
-        # Standard: only remove if directory is named exactly as expected
-        manga_dir = self.root / f"_{manga_id}"
-        if manga_dir.exists() and manga_dir.is_dir():
-            import shutil
-            shutil.rmtree(manga_dir)
-            
-        assets_dir = self.root / "assets" / "mangas" / manga_id
-        if assets_dir.exists() and assets_dir.is_dir():
-            import shutil
-            shutil.rmtree(assets_dir)
-            
-        print(f"Manga {manga_id} removed completely.")
+        # Cleanup folders
+        import shutil
+        shutil.rmtree(self.root / f"_{manga_id}", ignore_errors=True)
+        shutil.rmtree(self.root / "assets" / "mangas" / manga_id, ignore_errors=True)
+        
+        # Cleanup cover image
+        if cover_path and cover_path.startswith("/assets/img/"):
+            # Remove leading slash to make it relative to root
+            local_cover_path = self.root / cover_path.lstrip("/")
+            if local_cover_path.exists() and local_cover_path.is_file():
+                try:
+                    os.remove(local_cover_path)
+                except Exception as e:
+                    print(f"Failed to remove cover image: {e}")
+        
+        print(f"Manga {manga_id} removed.")

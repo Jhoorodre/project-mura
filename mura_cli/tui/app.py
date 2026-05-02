@@ -208,7 +208,6 @@ class ManageMangaScreen(Static):
         log = self.query_one("#op-log")
         log.write(f"> Starting {task_name}...\n")
         try:
-            # Note: Using absolute path to venv mura if possible
             process = await asyncio.create_subprocess_exec(
                 *cmd,
                 stdout=asyncio.subprocess.PIPE,
@@ -221,6 +220,10 @@ class ManageMangaScreen(Static):
                 log.write(line.decode())
             await process.wait()
             log.write(f"> {task_name} finished.\n")
+        except FileNotFoundError:
+            log.write(f"Error: Command '{cmd[0]}' not found.\n")
+            if cmd[0] == "bundle":
+                log.write("Please install Ruby and Bundler to build Jekyll locally.\n")
         except Exception as e:
             log.write(f"Error: {e}\n")
 
